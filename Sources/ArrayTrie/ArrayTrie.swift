@@ -92,7 +92,7 @@ public struct ArrayTrie<Value> {
             updateChild(firstKey, Node(prefix: Array(path.dropFirst()), value: value, children: [:]))
             return
         }
-        children[firstKey]!.set(keys: ArraySlice(path).dropFirst(), to: value)
+        updateChild(firstKey, children[firstKey]!.setting(keys: ArraySlice(path).dropFirst(), to: value))
     }
 
     public func valuesAlongPath(_ path: String) -> [(Self, Value)] {
@@ -251,7 +251,17 @@ final class ArrayTrieNode<Value> {
         return childNode.get(suffix.dropFirst())
     }
 
-    func set(keys: ArraySlice<String>, to value: Value) {
+    /// A copy of this node with `value` set at `keys`. Nodes are shared by
+    /// every copy of a trie, so an update copies the nodes on its path and
+    /// leaves the ones it was given untouched.
+    func setting(keys: ArraySlice<String>, to value: Value) -> ArrayTrieNode<Value> {
+        let copy = ArrayTrieNode(prefix: prefix, value: self.value, children: children)
+        copy.set(keys: keys, to: value)
+        return copy
+    }
+
+    /// Sets `value` in place: only for a node no trie shares yet (`setting`).
+    private func set(keys: ArraySlice<String>, to value: Value) {
         if keys.count >= prefix.count && keys.starts(with: prefix) {
             let suffix = keys.dropFirst(prefix.count)
 
@@ -265,7 +275,7 @@ final class ArrayTrieNode<Value> {
                 return
             }
 
-            children[firstSuffixValue]!.set(keys: suffix.dropFirst(), to: value)
+            updateChild(firstSuffixValue, children[firstSuffixValue]!.setting(keys: suffix.dropFirst(), to: value))
             return
         }
 

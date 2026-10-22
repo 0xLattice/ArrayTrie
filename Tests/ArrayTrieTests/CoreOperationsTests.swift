@@ -4,6 +4,30 @@ import TrieDictionary
 
 @Suite struct CoreOperationsTests {
 
+    // ArrayTrie is a value type: setting a path on a copy must leave the
+    // original as it was, whichever node the write lands on.
+    @Test func testSetOnACopyLeavesTheOriginal() {
+        var original = ArrayTrie<String>()
+        original.set(["users", "john", "email"], value: "j@x")
+        original.set(["users", "john", "phone"], value: "555")
+
+        for path in [
+            ["users", "john", "name"],   // a new child below an existing node
+            ["users", "john", "email"],  // an existing node's value
+            ["users"],                   // splits a compressed prefix
+            ["users", "jane"],           // diverges inside a compressed prefix
+        ] {
+            var copy = original
+            copy.set(path, value: "changed")
+            #expect(copy.get(path) == "changed")
+            #expect(original.get(["users", "john", "email"]) == "j@x")
+            #expect(original.get(["users", "john", "phone"]) == "555")
+            #expect(original.get(["users", "john", "name"]) == nil)
+            #expect(original.get(["users"]) == nil)
+            #expect(original.get(["users", "jane"]) == nil)
+        }
+    }
+
     @Test func testEmptyTrie() {
         let trie = ArrayTrie<String>()
         #expect(trie.isEmpty)
