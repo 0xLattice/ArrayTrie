@@ -14,7 +14,7 @@ let package = Package(
         .library(name: "ArrayTrie", targets: ["ArrayTrie"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/adalinxx/TrieDictionary.git", from: "0.0.9"),
+        .package(url: "https://github.com/0xLattice/TrieDictionary.git", from: "0.0.9"),
     ],
     targets: [
         .target(

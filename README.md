@@ -1,6 +1,6 @@
 # ArrayTrie
 
-[![Tests](https://github.com/adalinxx/ArrayTrie/actions/workflows/test.yml/badge.svg)](https://github.com/adalinxx/ArrayTrie/actions/workflows/test.yml)
+[![Tests](https://github.com/0xLattice/ArrayTrie/actions/workflows/test.yml/badge.svg)](https://github.com/0xLattice/ArrayTrie/actions/workflows/test.yml)
 [![Swift 6.0](https://img.shields.io/badge/Swift-6.0-orange.svg)](https://swift.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
@@ -79,7 +79,7 @@ completions.childKeys()  // contains "", "ui", "data" (order unspecified) — su
 ```swift
 // Package.swift
 dependencies: [
-    .package(url: "https://github.com/adalinxx/ArrayTrie.git", from: "1.0.0"),
+    .package(url: "https://github.com/0xLattice/ArrayTrie.git", from: "1.0.0"),
 ]
 ```
 
